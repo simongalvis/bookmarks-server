@@ -46,9 +46,23 @@ bookmarkRouter
             .json(bookmark)
     })
 
-/* 
+ 
 bookmarkRouter
-    .router('/bookmark/:bookmark_id') */
+    .route('/bookmark/:id')
+    .get((req, res) =>{
+        const { id } = req.params;
+        const bookmark = bookmarks.find(bookmark => bookmark.id == id);
+
+        if(!bookmark){
+            logger.error(`Bookmark with id ${id} not found`)
+            return res
+                .status(404)
+                .send('Card not found');
+        }
+
+        res.json(bookmark);
+    })
+    
  
 
 module.exports = bookmarkRouter;
