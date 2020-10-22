@@ -76,7 +76,7 @@ bookmarkRouter
 
         bookmarks.splice(bookmarkIndex, 1);
 
-        logger.info(`Bookmark with id ${id} deleted.`);
+        logger.info(`Bookmark with id ${id} deleted.`); 
         res
             .status(204)
             .end();
