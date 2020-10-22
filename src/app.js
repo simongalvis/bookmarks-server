@@ -3,10 +3,15 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
-const { NODE_ENV } = require('./config')
+const { NODE_ENV, API_TOKEN } = require('./config')
 const bookmarkRouter = require('./bookmark/bookmark-router')
+const logger = require('./logger')
+const validateBearerToken = require('./validate-bearer-token')
 
 const app = express()
+
+console.log(API_TOKEN)
+console.log(NODE_ENV)
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
@@ -16,16 +21,7 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-app.use(function validateBearerToken(req, res, next) {
-  const apiToken = process.env.API_TOKEN
-  const authToken = req.get('Authorization')
-
-  if (!authToken || authToken.split(' ')[1] !== apiToken) {
-    return res.status(401).json({ error: 'Unauthorized request' })
-  }
-  // move to the next middleware
-  next()
-})
+app.use(validateBearerToken)
 
 app.use(bookmarkRouter)
 
