@@ -8,11 +8,11 @@ const logger = winston.createLogger({
       new winston.transports.File({ filename: 'info.log' })
     ]
   })
-  
+
   if (NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({
       format: winston.format.simple()
     }))
   }
-  
+  //test
   module.exports = logger
