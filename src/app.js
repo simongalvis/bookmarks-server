@@ -11,7 +11,7 @@ const validateBearerToken = require('./validate-bearer-token')
 const app = express()
 
 //console.log(API_TOKEN)
-//console.log(NODE_ENV)
+//console.log(NODE_ENV)--
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
