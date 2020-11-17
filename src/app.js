@@ -30,6 +30,10 @@ app.get('/', (req, res) =>{
   res.send("Hello, world!")
 })
 
+// app.get('/bookmarks', (req, res) => {
+//   res.json("bookmarks endpoint working")
+// })
+
  app.use(function errorHandler(error, req, res, next) {
      let response
      if (NODE_ENV === 'production') {

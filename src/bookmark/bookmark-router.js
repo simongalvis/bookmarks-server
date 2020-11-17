@@ -2,15 +2,21 @@ const express = require('express')
 const { v4: uuid } = require('uuid')
 const logger = require('winston')
 const { bookmarks } = require('../store')
-
+const BookmarkService = require('./bookmark-service')
 
 const bookmarkRouter = express.Router()
 const bodyParser = express.json()
 
+
 bookmarkRouter
     .route('/bookmark')
-    .get((req, res) =>{
-        res.json(bookmarks)
+    .get((req, res, next) =>{
+      const knexInstance = req.app.get('db')
+      BookmarkService.getAllBookmarks(knexInstance)
+        .then(bookmarks => {
+          res.json(bookmarks)
+        })
+
     })
     .post((req, res) =>{
     const { title, url, description, rating} = req.body;
@@ -36,7 +42,7 @@ bookmarkRouter
             description,
             rating,
         }
-        
+
         bookmarks.push(bookmark);
 
         logger.info(`Card with id ${id} created`);
@@ -46,7 +52,7 @@ bookmarkRouter
             .json(bookmark)
     })
 
- 
+
 bookmarkRouter
     .route('/bookmark/:id')
     .get((req, res) =>{
@@ -76,12 +82,12 @@ bookmarkRouter
 
         bookmarks.splice(bookmarkIndex, 1);
 
-        logger.info(`Bookmark with id ${id} deleted.`); 
+        logger.info(`Bookmark with id ${id} deleted.`);
         res
             .status(204)
             .end();
     });
-    
- 
+
+
 
 module.exports = bookmarkRouter;
